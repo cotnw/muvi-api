@@ -10,7 +10,7 @@ const ytsSearch = async(query) => {
         source: 'YTS Torrents'
     }
     axios.get(`https://yts.mx/api/v2/list_movies.json?query_term=${query}`).then(response => {
-        console.log(response.data)
+        console.log(response.data.movies)
         response.data.data.movies.forEach((movie, index) => {
             movie.torrents.forEach(torrent => {
                 movieObject.torrents.push({
@@ -33,6 +33,7 @@ const ytsSearch = async(query) => {
                 torrents: [],
                 source: 'YTS Torrents'
             }
+            console.log(movieHits)
             if (index == (response.data.data.movie_count - 1)) {
                 return movieHits
             }
