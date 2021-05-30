@@ -27,7 +27,7 @@ router.get('/', async(req, res) => {
         movieObject.title = movie.title
         movieObject.link = movie.url
         movieObject.poster_url = movie.medium_cover_image
-        moviesList.push(movie)
+        moviesList.push(movieObject)
         movieObject = {
             title: '',
             poster_url: '',
