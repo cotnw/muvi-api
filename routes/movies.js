@@ -5,7 +5,7 @@ const ytsSearch = require('../sources/yts')
 router.get('/', async(req, res) => {
     moviesList = []
     let yts = await ytsSearch(req.query.q)
-    moviesList.push(...yts)
+    moviesList.push.apply(moviesList, yts)
     res.json(moviesList)
 });
 
