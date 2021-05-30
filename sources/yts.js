@@ -35,9 +35,8 @@ const ytsSearch = async(query) => {
             }
         })
         return movieHits
-            .catch(error => {
-                console.log(error)
-            })
+    }).catch(error => {
+        console.log(error)
     })
 }
 
