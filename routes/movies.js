@@ -11,7 +11,7 @@ router.get('/', async(req, res) => {
         torrents: [],
         source: 'YTS Torrents'
     }
-    let response = await axios.get(`https://yts.mx/api/v2/list_movies.json?query_term=${query}`)
+    let response = await axios.get(`https://yts.mx/api/v2/list_movies.json?query_term=${req.query.q}`)
     console.log(response.data.movies)
     response.data.data.movies.forEach((movie, index) => {
         movie.torrents.forEach(torrent => {
