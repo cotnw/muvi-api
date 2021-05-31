@@ -15,7 +15,6 @@ router.get('/', async(req, res) => {
     }
     let response = await axios.get(`https://yts.mx/api/v2/list_movies.json?query_term=${req.query.q}`)
     console.log(response.data.data.movies)
-    var imdbId = response.data.data.movie.imdb_code
     if(response.data.data.movies == undefined) {
         res.sendStatus(404)
     } else {
@@ -30,6 +29,7 @@ router.get('/', async(req, res) => {
                     magnet: `magnet:?xt=urn:btih:${torrent.hash}&dn=${encodeURIComponent(movie.title)}`
                 })
             })
+            const imdbId = movie.imdb_code
 
             const config = {
                 method: "get",
