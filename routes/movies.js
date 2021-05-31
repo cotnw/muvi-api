@@ -1,6 +1,7 @@
 const express = require('express');
 const router = express.Router();
 const axios = require('axios')
+require('dotenv').config()
 
 router.get('/', async(req, res) => {
     moviesList = []
@@ -8,6 +9,7 @@ router.get('/', async(req, res) => {
         title: '',
         poster_url: '',
         link: '',
+        subtitleLink: '',
         torrents: [],
         source: 'YTS Torrents'
     }
@@ -27,19 +29,38 @@ router.get('/', async(req, res) => {
                     magnet: `magnet:?xt=urn:btih:${torrent.hash}&dn=${encodeURIComponent(movie.title)}`
                 })
             })
-            movieObject.title = movie.title
-            movieObject.link = movie.url
-            movieObject.poster_url = movie.medium_cover_image
-            moviesList.push(movieObject)
-            movieObject = {
-                title: '',
-                poster_url: '',
-                link: '',
-                torrents: [],
-                source: 'YTS Torrents'
-            }
+            const imdbId = movie.imdb_code
+
+            const config = {
+                method: "get",
+                url: `https://api.opensubtitles.com/api/v1/subtitles?imdb_id=${imdbId}&languages=en`,
+                headers: {
+                    "Api-Key": `${process.env.OS_API_KEY}`
+                    }
+                }
+    
+                axios(config)
+                .then(resp=>{
+                    const url = resp.data.data[0].attributes.url
+                    movieObject.subtitleLink = url
+                    movieObject.title = movie.title
+                    movieObject.link = movie.url
+                    movieObject.poster_url = movie.medium_cover_image
+                    moviesList.push(movieObject)
+                    movieObject = {
+                        title: '',
+                        poster_url: '',
+                        link: '',
+                        subtitleLink: '',
+                        torrents: [],
+                        source: 'YTS Torrents'
+                    }
+                })
+                .catch(err=>console.log(err))
         })
-        res.json(moviesList)
+        setTimeout(() => {
+            res.json(moviesList)
+        }, 3000*response.data.data.movies.length);
     }
 });
 
