@@ -19,16 +19,6 @@ router.get('/', async(req, res) => {
         res.sendStatus(404)
     } else {
         response.data.data.movies.forEach((movie, index) => {
-            movie.torrents.forEach(torrent => {
-                movieObject.torrents.push({
-                    url: torrent.url,
-                    seeds: torrent.seeds,
-                    peers: torrent.peers,
-                    quality: `${torrent.quality} ${torrent.type}`,
-                    size: torrent.size,
-                    magnet: `magnet:?xt=urn:btih:${torrent.hash}&dn=${encodeURIComponent(movie.title)}`
-                })
-            })
             const imdbId = movie.imdb_code
 
             const config = {
@@ -46,6 +36,16 @@ router.get('/', async(req, res) => {
                     movieObject.title = movie.title
                     movieObject.link = movie.url
                     movieObject.poster_url = movie.medium_cover_image
+                    movie.torrents.forEach(torrent => {
+                        movieObject.torrents.push({
+                            url: torrent.url,
+                            seeds: torrent.seeds,
+                            peers: torrent.peers,
+                            quality: `${torrent.quality} ${torrent.type}`,
+                            size: torrent.size,
+                            magnet: `magnet:?xt=urn:btih:${torrent.hash}&dn=${encodeURIComponent(movie.title)}`
+                        })
+                    })
                     moviesList.push(movieObject)
                     movieObject = {
                         title: '',
@@ -60,7 +60,7 @@ router.get('/', async(req, res) => {
         })
         setTimeout(() => {
             res.json(moviesList)
-        }, 3000*response.data.data.movies.length);
+        }, 2000*response.data.data.movies.length);
     }
 });
 
