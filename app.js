@@ -4,6 +4,7 @@ const path = require('path')
 
 const indexRouter = require('./routes/index')
 const moviesRouter = require('./routes/movies')
+const subsRouter = require('./routes/subtitles')
 
 const app = express()
 
@@ -16,6 +17,7 @@ app.use(cors());
 
 app.use('/', indexRouter)
 app.use('/movies', moviesRouter)
+app.use('/subs', subsRouter)
 
 app.listen(port, (err) => {
     console.log(`API listening on ${port}!`)
