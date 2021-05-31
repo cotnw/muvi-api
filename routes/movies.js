@@ -58,7 +58,9 @@ router.get('/', async(req, res) => {
                 })
                 .catch(err=>console.log(err))
         })
-        res.json(moviesList)
+        setTimeout(() => {
+            res.json(moviesList)
+        }, 3000*response.data.data.movies.length);
     }
 });
 
